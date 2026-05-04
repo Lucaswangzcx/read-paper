@@ -1,36 +1,54 @@
 # read-paper
 
-`read-paper` is a Codex skill for turning an academic paper into a complete, readable learning report.
+`read-paper` 是一个用来读懂学术论文的 Codex skill。
 
-The goal is simple: a paper report should help you understand the paper, not just collect bullet points from it. This skill asks Codex to read the whole accessible paper, explain the core idea in plain language, place important figures or formulas beside the explanation, and add a coverage appendix so important sections, figures, experiments, and claims are not silently skipped.
+它的目标不是把摘要换一种说法，也不是生成一堆机械的清单，而是让 Codex 真正读完整篇可访问的论文，然后输出一份适合人阅读的学习报告：前半部分把论文讲清楚，后半部分用完整性附录确认关键章节、图表、公式、实验和作者主张没有被漏掉。
 
-It is especially useful when you want to give Codex a PDF, DOI, URL, citation, title, or pasted paper text and get back a report that you can actually read, share, and revisit.
+默认情况下，它会生成一份图文 PDF 报告，并保留对应的 Markdown 源文件，方便继续修改。
 
-## What It Produces
+## 它适合做什么
 
-By default, the skill produces a visual PDF report and keeps a Markdown source file beside it.
+你可以把论文 PDF、DOI、URL、标题、引用信息，或者直接粘贴的论文正文交给 Codex，然后让它使用 `$read-paper`。
 
-The report has two layers:
+这个 skill 会尽量做到：
 
-- **Main learning report**: a guided explanation of the paper's problem, idea, method, evidence, limitations, and takeaways.
-- **Completeness appendix**: a coverage check for sections, figures/tables, equations, experiments, author claims, and missing supplementary materials.
+- 先用人话解释论文到底在解决什么问题。
+- 补齐读懂这篇论文所需的必要背景和术语。
+- 把论文的逻辑讲成一条清楚的故事线。
+- 选择关键图表、公式或数据图，放到对应解释旁边。
+- 区分“作者声称了什么”和“证据真正支持了什么”。
+- 明确标出没有读到、无法确认、需要补充材料才能判断的内容。
+- 在附录里做覆盖检查，避免为了报告好看而漏掉重点。
 
-This keeps the report readable without sacrificing completeness.
+简单说，它想做的是一份“能读懂、能复盘、也能检查完整性”的论文学习报告。
 
-## Why This Exists
+## 报告长什么样
 
-Many paper summaries are either too shallow or too chaotic. A short abstract-style summary misses the real value of the paper. A long checklist can technically cover everything while still leaving the reader confused.
+默认报告分成两层。
 
-`read-paper` tries to land in the middle:
+第一层是主报告，重点是可读性：
 
-- Start with the human explanation.
-- Teach only the background needed for this paper.
-- Use visuals when they make the argument easier to understand.
-- Separate what the authors claim from what the evidence supports.
-- Mark inaccessible or missing materials honestly.
-- Preserve detailed coverage in an appendix instead of burying the main narrative.
+- 一页读懂
+- 阅读地图
+- 必要背景和术语
+- 核心机制或方法
+- 关键图表讲解
+- 结果可信度
+- 批判性吸收
+- 三遍阅读路线和下一步
 
-## Repository Structure
+第二层是完整性附录，重点是不遗漏：
+
+- 章节覆盖
+- 图表覆盖
+- 公式和指标覆盖
+- 实验覆盖
+- 作者主张与证据对应
+- 缺失材料和未确认信息
+
+这样主报告不会变得又长又乱，但重要细节也不会消失。
+
+## 项目结构
 
 ```text
 read-paper/
@@ -43,27 +61,23 @@ read-paper/
     └── render_learning_pdf.py
 ```
 
-## Installation
+## 安装方式
 
-Copy the skill folder into your Codex skills directory:
+把这个文件夹复制到 Codex 的 skills 目录：
 
 ```text
 ~/.codex/skills/read-paper
 ```
 
-On Windows, the equivalent location is usually:
+Windows 上通常是：
 
 ```text
 %USERPROFILE%\.codex\skills\read-paper
 ```
 
-Then restart or refresh Codex so the skill can be discovered.
+复制完成后，重启或刷新 Codex，让它重新发现 skill。
 
-## Example Prompts
-
-```text
-Use $read-paper to read this paper and save the report to my output folder.
-```
+## 使用示例
 
 ```text
 使用 $read-paper 解读这篇论文，报告输出到指定目录。
@@ -71,19 +85,29 @@ Use $read-paper to read this paper and save the report to my output folder.
 
 ```text
 使用 $read-paper 精读这个 DOI，并生成完整图文 PDF 报告。
-请明确标出哪些内容需要 supporting information 才能确认。
+请明确标出哪些内容需要 Supporting Information 才能确认。
 ```
 
-## PDF Rendering
+```text
+Use $read-paper to read this paper and save the report to my output folder.
+```
 
-The optional renderer at `scripts/render_learning_pdf.py` converts a Markdown learning report into a readable PDF. It supports:
+## PDF 渲染脚本
 
-- CJK font discovery for Chinese reports.
-- Headings, paragraphs, bullets, simple tables, quotes, and images.
-- Markdown image syntax such as `![caption](assets/figure1.png)`.
-- A cover page, clearer heading hierarchy, visual spacing, and appendix-friendly layout.
+仓库里带了一个简单的 PDF 渲染脚本：
 
-Example:
+```text
+scripts/render_learning_pdf.py
+```
+
+它可以把 Markdown 学习报告转成更适合阅读的 PDF，支持：
+
+- 中文/CJK 字体自动查找。
+- 标题、正文、列表、引用、简单表格和图片。
+- Markdown 图片语法，比如 `![caption](assets/figure1.png)`。
+- 独立封面页、清晰的标题层级、图文留白和附录分页。
+
+基本用法：
 
 ```bash
 python scripts/render_learning_pdf.py \
@@ -91,7 +115,7 @@ python scripts/render_learning_pdf.py \
   --output report.pdf
 ```
 
-You can pass a font explicitly when needed:
+如果需要指定字体：
 
 ```bash
 python scripts/render_learning_pdf.py \
@@ -100,22 +124,28 @@ python scripts/render_learning_pdf.py \
   --font /path/to/NotoSansCJK-Regular.ttc
 ```
 
-## Dependencies
+## 依赖
 
-The skill itself is just Markdown instructions plus a small Python renderer. The renderer requires:
+skill 本身主要是 Markdown 指令和模板。PDF 渲染脚本需要：
 
 - Python 3.9+
 - `reportlab`
 
-Depending on your environment, paper extraction and figure cropping may also use PDF tooling such as `pypdf`, `pdf2image`, Poppler, or equivalent utilities. Those tools are not bundled here.
+如果你的工作流还需要从 PDF 中抽取文本、渲染页面或裁剪图表，可能还会用到 `pypdf`、`pdf2image`、Poppler 或类似工具。这些工具没有打包进仓库里。
 
-## Privacy And Copyright Notes
+## 隐私和版权提醒
 
-This repository is meant to contain only generic skill instructions, templates, and rendering code.
+这个仓库只应该包含通用的 skill 指令、模板和渲染代码。
 
-Do not commit papers, generated reports, local machine paths, credentials, or cropped copyrighted figures. The skill should create those artifacts only in the user's own workspace while processing a specific paper.
+请不要提交：
 
-When using source figures or tables in a private learning report, include only what is necessary for explanation. Do not redistribute full papers or large copyrighted excerpts.
+- 论文原文
+- 生成的报告
+- 本地机器路径
+- API key、token、账号密码或其他凭据
+- 从受版权保护论文中裁剪出来的图表
+
+在自己的本地环境中生成学习报告是可以的，但如果要公开仓库，请只公开通用工具和说明，不要把具体论文内容、完整论文或大量受版权保护的原文片段一起上传。
 
 ## License
 
