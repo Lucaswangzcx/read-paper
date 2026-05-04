@@ -52,7 +52,11 @@
 
 ```text
 read-paper/
+├── CLAUDE.md
 ├── SKILL.md
+├── adapters/
+│   ├── README.md
+│   └── generic-agent-rules.md
 ├── agents/
 │   └── openai.yaml
 ├── references/
@@ -76,6 +80,23 @@ Windows 上通常是：
 ```
 
 复制完成后，重启或刷新 Codex，让它重新发现 skill。
+
+## 其他 Agent 能不能用
+
+可以。
+
+`SKILL.md` 是给 Codex 原生读取的；但这套论文阅读流程本身是通用的，所以仓库也放了几个适配文件：
+
+- `CLAUDE.md`：给 Claude Code 使用，可以放到项目根目录。
+- `adapters/generic-agent-rules.md`：给 Trae、CodeBuddy 或其他支持自定义规则的 agent 使用。
+- `adapters/README.md`：说明不同 agent 怎么接入。
+
+也就是说：
+
+- Codex 可以直接把它当 skill 用。
+- Claude Code 可以读取 `CLAUDE.md`。
+- Trae、CodeBuddy 等可以复制通用规则到项目规则或自定义指令里。
+- PDF 渲染脚本是普通 Python 脚本，任何 agent 都可以调用。
 
 ## 使用示例
 
@@ -150,4 +171,3 @@ skill 本身主要是 Markdown 指令和模板。PDF 渲染脚本需要：
 ## License
 
 MIT License. See [LICENSE](LICENSE).
-
