@@ -1,0 +1,38 @@
+# Generated reports and source papers
+*.pdf
+*.docx
+*.pptx
+*.xlsx
+*.csv
+*.tsv
+*.bib
+*.ris
+
+# Paper/report assets generated during local analysis
+*-assets/
+assets/generated/
+paper_pages/
+visual_report_assets/
+*_preview.png
+paper_extracted*.txt
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local secrets/config
+.env
+.env.*
+*.key
+*.pem
+*.p12
+

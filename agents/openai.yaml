@@ -1,0 +1,4 @@
+interface:
+  display_name: "读懂论文"
+  short_description: "先讲懂再批判，生成可学习吸收的论文解读报告"
+  default_prompt: "Use $read-paper to teach me the paper I provide and save a PDF learning report to my specified directory."
